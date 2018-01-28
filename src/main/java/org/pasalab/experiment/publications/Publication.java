@@ -1,8 +1,7 @@
-package publications;
+package org.pasalab.experiment.publications;
 
-import fields.*;
-import org.xml.sax.helpers.DefaultHandler;
-import utils.CDATA;
+import org.pasalab.experiment.fields.*;
+import org.pasalab.experiment.utils.CDATA;
 
 import java.util.ArrayList;
 import java.util.List;

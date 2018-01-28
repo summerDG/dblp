@@ -1,17 +1,18 @@
-package publications;
+package org.pasalab.experiment.publications;
 
-import fields.*;
+import org.pasalab.experiment.fields.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import utils.PCDATA;
-import utils.Schema;
+import org.pasalab.experiment.utils.PCDATA;
+import org.pasalab.experiment.utils.Schema;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class PublicationHandler extends DefaultHandler {
@@ -46,6 +47,7 @@ public class PublicationHandler extends DefaultHandler {
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         // TODO Auto-generated method stub
         super.startElement(uri, localName, qName, attributes);
+        value = "";
         if(publicationType.equals(qName)) {
             String sub = publicationType.substring(0, 1).toUpperCase() + publicationType.substring(1);
             if (publicationType.equals("article")) {
@@ -97,16 +99,22 @@ public class PublicationHandler extends DefaultHandler {
             }
         }else if(publicationType.equals(qName)){
             isEnd = true;
-            publication.addField(field);
-            String row = schema.toRow(publication);
-            // 提交或写入一次
-            try {
-                out.write(row.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
+            List<String> rows = schema.toRows(publication);
+            for (String row : rows) {
+                // 提交或写入一次
+                StringBuilder builder = new StringBuilder();
+                builder.append("{");
+                builder.append(row);
+                builder.append("}");
+                try {
+                    out.write(builder.toString().getBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }else if (attributeTypes.contains(qName) && isEnd ==false) {
             field.setKey(new PCDATA(value));
+            publication.addField(field);
         }
     }
 

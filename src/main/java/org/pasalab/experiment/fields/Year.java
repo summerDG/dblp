@@ -1,17 +1,17 @@
-package fields;
+package org.pasalab.experiment.fields;
 
 import org.xml.sax.Attributes;
-import utils.CDATA;
-import utils.PCDATA;
+import org.pasalab.experiment.utils.CDATA;
+import org.pasalab.experiment.utils.PCDATA;
 
-public class Pages extends Field {
+public class Year extends Field{
     private CDATA aux;
     private CDATA label;
     private CDATA type;
-    public Pages(PCDATA key) {
+    public Year(PCDATA key) {
         super(key);
     }
-    public Pages(Attributes attributes) {
+    public Year(Attributes attributes) {
         super(attributes);
     }
 

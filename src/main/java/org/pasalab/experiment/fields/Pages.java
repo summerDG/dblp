@@ -1,19 +1,17 @@
-package fields;
+package org.pasalab.experiment.fields;
 
 import org.xml.sax.Attributes;
-import utils.CDATA;
-import utils.PCDATA;
+import org.pasalab.experiment.utils.CDATA;
+import org.pasalab.experiment.utils.PCDATA;
 
-public class Author extends Field {
+public class Pages extends Field {
     private CDATA aux;
-    private CDATA bibtex;
-    private CDATA orcid;
     private CDATA label;
     private CDATA type;
-    public Author(PCDATA key) {
+    public Pages(PCDATA key) {
         super(key);
     }
-    public Author(Attributes attributes) {
+    public Pages(Attributes attributes) {
         super(attributes);
     }
 
@@ -23,22 +21,6 @@ public class Author extends Field {
 
     public void setAux(CDATA aux) {
         this.aux = aux;
-    }
-
-    public CDATA getBibtex() {
-        return bibtex;
-    }
-
-    public void setBibtex(CDATA bibtex) {
-        this.bibtex = bibtex;
-    }
-
-    public CDATA getOrcid() {
-        return orcid;
-    }
-
-    public void setOrcid(CDATA orcid) {
-        this.orcid = orcid;
     }
 
     public CDATA getLabel() {
@@ -60,19 +42,10 @@ public class Author extends Field {
     public void set(String attr, String value) {
         if (attr.equals("aux")) {
             setAux(new CDATA(value));
-        } else if (attr.equals("bibtex")) {
-            setBibtex(new CDATA(value));
-        } else if (attr.equals("orcid")) {
-            setOrcid(new CDATA(value));
         } else if (attr.equals("label")) {
             setLabel(new CDATA(value));
         } else if (attr.equals("type")) {
             setType(new CDATA(value));
         }
-    }
-
-    @Override
-    public String toString() {
-        return key.toString();
     }
 }

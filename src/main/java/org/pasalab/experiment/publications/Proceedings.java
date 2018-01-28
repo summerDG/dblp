@@ -1,7 +1,7 @@
-package publications;
+package org.pasalab.experiment.publications;
 
 import org.xml.sax.Attributes;
-import utils.CDATA;
+import org.pasalab.experiment.utils.CDATA;
 
 import java.util.HashSet;
 import java.util.Set;

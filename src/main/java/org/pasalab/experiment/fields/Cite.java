@@ -1,8 +1,8 @@
-package fields;
+package org.pasalab.experiment.fields;
 
 import org.xml.sax.Attributes;
-import utils.CDATA;
-import utils.PCDATA;
+import org.pasalab.experiment.utils.CDATA;
+import org.pasalab.experiment.utils.PCDATA;
 
 public class Cite extends Field {
     private CDATA aux;

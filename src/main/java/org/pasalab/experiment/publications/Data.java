@@ -1,12 +1,12 @@
-package publications;
+package org.pasalab.experiment.publications;
 
 import org.xml.sax.Attributes;
-import utils.CDATA;
+import org.pasalab.experiment.utils.CDATA;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class Mastersthesis extends Publication {
+public class Data extends Publication {
     public static Set<String> attributes = new HashSet<String>();
     static {
         attributes.add("key");
@@ -15,11 +15,11 @@ public class Mastersthesis extends Publication {
         attributes.add("cdate");
     }
 
-    public Mastersthesis(CDATA key) {
+    public Data(CDATA key) {
         this.key = key;
     }
 
-    public Mastersthesis(Attributes attributes) {
+    public Data(Attributes attributes) {
         for (int i =0; i < attributes.getLength(); i++) {
             String localName = attributes.getLocalName(i);
             if (Article.attributes.contains(localName)) {

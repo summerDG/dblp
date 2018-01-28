@@ -1,9 +1,9 @@
-package fields;
+package org.pasalab.experiment.fields;
 
 import org.xml.sax.Attributes;
-import utils.PCDATA;
+import org.pasalab.experiment.utils.PCDATA;
 
-public abstract class Field {
+abstract public class Field {
     protected PCDATA key;
     public Field(PCDATA key) {
         this.key = key;

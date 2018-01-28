@@ -1,4 +1,4 @@
-package utils;
+package org.pasalab.experiment.utils;
 
 public final class CDATA {
     private String name;
