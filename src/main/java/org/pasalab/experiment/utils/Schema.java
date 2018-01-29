@@ -29,35 +29,80 @@ public class Schema {
             e.printStackTrace();
         }
     }
+    private List filter(Object[] objs) {
+        List list = new ArrayList();
+        for (Object obj : objs) {
+            if (!obj.toString().equals("...")) list.add(obj);
+        }
+        return list;
+    }
+    private List filter(List objs) {
+        List list = new ArrayList();
+        for (Object obj : objs) {
+            if (!obj.toString().equals("...")) list.add(obj);
+        }
+        return list;
+    }
     //TODO: 有些属性是一个数组, 所以返回应该是一个数组
     public List<String> toRows(Object obj) {
-        StringBuilder builder = new StringBuilder();
         List<String> rows = new ArrayList<String>();
-        boolean f = false;
         Iterator<String> itr = attributes.keySet().iterator();
         while (itr.hasNext()){
             String k = itr.next();
             String attr = attributes.get(k);
-            if (f) builder.append(",");
-            builder.append("\""+attr+"\":");
             Method mtd = extractors.get(attr);
             try {
+                Class listClazz = List.class;
                 if (mtd.getReturnType().isArray()) {
-                    Object[] objs = (Object[]) mtd.invoke(obj);
-                    for (Object o : objs) {
-                        rows.add(builder.toString() + o.toString());
+                    List objs = filter((Object[]) mtd.invoke(obj));
+                    if (objs.isEmpty()) return new ArrayList<String>();
+                    if (rows.size() > 0) {
+                        List<String> freshRows = new ArrayList<String>();
+                        for (int i = 0; i < rows.size(); i++) {
+                            String pre = rows.get(i);
+                            for (Object o : objs) {
+                                freshRows.add(pre + ",\"" +k +"\":"+o.toString());
+                            }
+                        }
+                        rows = freshRows;
+                    } else {
+                        for (Object o : objs) {
+                            rows.add("\"" +k +"\":"+o.toString());
+                        }
+                    }
+                }else if (listClazz.isAssignableFrom(mtd.getReturnType())){
+                    List objs = filter((List)mtd.invoke(obj));
+                    if (objs.isEmpty()) return new ArrayList<String>();
+                    if (rows.size() > 0) {
+                        List<String> freshRows = new ArrayList<String>();
+                        for (int i = 0; i < rows.size(); i++) {
+                            String pre = rows.get(i);
+                            for (Object o : objs) {
+                                freshRows.add(pre + ",\"" +k +"\":"+o.toString());
+                            }
+                        }
+                        rows = freshRows;
+                    } else {
+                        for (Object o : objs) {
+                            rows.add("\"" +k +"\":"+o.toString());
+                        }
                     }
                 } else {
                     String value = mtd.invoke(obj).toString();
-                    builder.append(value);
-                    rows.add(builder.toString());
+                    if (rows.size() > 0) {
+                        for (int i = 0; i < rows.size(); i++) {
+                            String pre = rows.get(i);
+                            rows.set(i, pre + ",\"" +k +"\":"+value);
+                        }
+                    } else {
+                        rows.add("\"" +k +"\":"+value);
+                    }
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
-            f = true;
         }
         return rows;
     }

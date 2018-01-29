@@ -15,12 +15,12 @@ import java.util.Map;
 public class ParserTest {
     public static void main(String[] args) {
         String input = args[0];
-        String output = args[0];
+        String output = args[1];
         File inFile = new File(input);
         File outFile = new File(output);
-        if (!inFile.exists()) {
+        if (!outFile.exists()) {
             try {
-                inFile.createNewFile();
+                outFile.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -30,9 +30,9 @@ public class ParserTest {
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             Map<String, String> pMap = new HashMap<String, String>();
             pMap.put("key", "key");
-            pMap.put("cite", "cite");
-            PublicationHandler publicationHandler = new PublicationHandler("publication",
-                    new Schema("publication", pMap, "Publication"), outFile);
+            pMap.put("cite", "cites");
+            PublicationHandler publicationHandler = new PublicationHandler(
+                    new Schema("publication", pMap, "org.pasalab.experiment.publications.Publication"), outFile);
             parser.parse(in, publicationHandler);
 
         } catch (ParserConfigurationException e) {

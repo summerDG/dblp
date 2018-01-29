@@ -16,16 +16,16 @@ import java.util.List;
 import java.util.Set;
 
 public class PublicationHandler extends DefaultHandler {
+    private static Set<String> publicationTypes = new HashSet<String>();
     private String publicationType;
     private Publication publication;
     private Field field;
     private String value;
     private FileOutputStream out;
     private Schema schema;
-    public PublicationHandler(String publication, Schema schema, File file) {
+    public PublicationHandler(Schema schema, File file) {
         try {
             this.out = new FileOutputStream(file);
-            this.publicationType = publication;
             this.schema = schema;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -38,6 +38,15 @@ public class PublicationHandler extends DefaultHandler {
         attributeTypes.add("pages");
         attributeTypes.add("title");
         attributeTypes.add("year");
+        publicationTypes.add("article");
+        publicationTypes.add("inproceedings");
+        publicationTypes.add("proceedings");
+        publicationTypes.add("book");
+        publicationTypes.add("incollection");
+        publicationTypes.add("phdthesis");
+        publicationTypes.add("mastersthesis");
+        publicationTypes.add("www");
+        publicationTypes.add("data");
     }
 
     boolean isEnd = false;
@@ -48,25 +57,26 @@ public class PublicationHandler extends DefaultHandler {
         // TODO Auto-generated method stub
         super.startElement(uri, localName, qName, attributes);
         value = "";
-        if(publicationType.equals(qName)) {
-            String sub = publicationType.substring(0, 1).toUpperCase() + publicationType.substring(1);
-            if (publicationType.equals("article")) {
+        if(publicationTypes.contains(qName)) {
+            publicationType = qName;
+            String sub = qName.substring(0, 1).toUpperCase() + qName.substring(1);
+            if (qName.equals("article")) {
                 publication = new Article(attributes);
-            } else if (publicationType.equals("inproceedings")) {
+            } else if (qName.equals("inproceedings")) {
                 publication = new Inproceedings(attributes);
-            } else if (publicationType.equals("proceedings")) {
+            } else if (qName.equals("proceedings")) {
                 publication = new Proceedings(attributes);
-            } else if (publicationType.equals("book")) {
+            } else if (qName.equals("book")) {
                 publication = new Book(attributes);
-            } else if (publicationType.equals("incollection")) {
+            } else if (qName.equals("incollection")) {
                 publication = new Incollection(attributes);
-            } else if (publicationType.equals("phdthesis")) {
+            } else if (qName.equals("phdthesis")) {
                 publication = new Phdthesis(attributes);
-            } else if (publicationType.equals("mastersthesis")) {
+            } else if (qName.equals("mastersthesis")) {
                 publication = new Mastersthesis(attributes);
-            } else if (publicationType.equals("www")) {
+            } else if (qName.equals("www")) {
                 publication = new Www(attributes);
-            } else if (publicationType.equals("data")) {
+            } else if (qName.equals("data")) {
                 publication = new Data(attributes);
             }
             isEnd = false;
@@ -105,7 +115,7 @@ public class PublicationHandler extends DefaultHandler {
                 StringBuilder builder = new StringBuilder();
                 builder.append("{");
                 builder.append(row);
-                builder.append("}");
+                builder.append("}\n");
                 try {
                     out.write(builder.toString().getBytes());
                 } catch (IOException e) {

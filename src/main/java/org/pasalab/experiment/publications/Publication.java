@@ -11,7 +11,7 @@ public abstract class Publication {
     protected CDATA mdate;
     protected CDATA publitype;
     protected CDATA cdate;
-    protected List<Field> fields;
+    protected List<Field> fields=new ArrayList<Field>();
     /**
      * author->0
      * cite->1
@@ -20,6 +20,12 @@ public abstract class Publication {
      * year->4
      */
     protected List<Integer>[] map;
+    {
+        map = new List[5];
+        for (int i = 0; i < 5; i++) {
+            map[i] = new ArrayList<Integer>();
+        }
+    }
 
     public CDATA getKey() {
         return key;
