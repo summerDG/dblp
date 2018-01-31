@@ -6,12 +6,10 @@ import java.util.*;
 
 public class Schema {
     private Map<String, String> attributes;
-    private String table;
     private Map<String, Method> extractors = new HashMap<String, Method>();
-    public Schema(String name, Map<String, String> attributes, String type) {
+    public Schema(Map<String, String> attributes, String type) {
         try {
             Class clazz = getClass().getClassLoader().loadClass(type);
-            this.table = name;
             this.attributes = attributes;
             Iterator<String> itr = attributes.keySet().iterator();
             while (itr.hasNext()){
@@ -88,14 +86,19 @@ public class Schema {
                         }
                     }
                 } else {
-                    String value = mtd.invoke(obj).toString();
-                    if (rows.size() > 0) {
-                        for (int i = 0; i < rows.size(); i++) {
-                            String pre = rows.get(i);
-                            rows.set(i, pre + ",\"" +k +"\":"+value);
-                        }
+                    Object r = mtd.invoke(obj);
+                    if (r == null) {
+
                     } else {
-                        rows.add("\"" +k +"\":"+value);
+                        String value = r.toString();
+                        if (rows.size() > 0) {
+                            for (int i = 0; i < rows.size(); i++) {
+                                String pre = rows.get(i);
+                                rows.set(i, pre + ",\"" +k +"\":"+value);
+                            }
+                        } else {
+                            rows.add("\"" +k +"\":"+value);
+                        }
                     }
                 }
             } catch (IllegalAccessException e) {

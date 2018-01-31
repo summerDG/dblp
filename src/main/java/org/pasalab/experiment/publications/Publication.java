@@ -60,16 +60,22 @@ public abstract class Publication {
         return cites;
     }
     public Pages getPages() {
-        Pages p = (Pages)(fields.get(map[2].get(0)));
-        return p;
+        if (map[2].size() > 0) {
+            Pages t = (Pages) (fields.get(map[2].get(0)));
+            return t;
+        } else return null;
     }
     public Title getTitle() {
-        Title t = (Title)(fields.get(map[3].get(0)));
-        return t;
+        if (map[3].size() > 0) {
+            Title t = (Title) (fields.get(map[3].get(0)));
+            return t;
+        } else return null;
     }
     public Year getYear() {
-        Year y = (Year)(fields.get(map[4].get(0)));
-        return y;
+        if (map[4].size() > 0) {
+            Year t = (Year) (fields.get(map[4].get(0)));
+            return t;
+        } else return null;
     }
 
     public void setKey(CDATA key) {

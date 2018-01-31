@@ -1,6 +1,5 @@
-package org.pasalab.experiment;
+package org.pasalab.experiment.examples;
 
-import org.pasalab.experiment.publications.Publication;
 import org.pasalab.experiment.publications.PublicationHandler;
 import org.pasalab.experiment.utils.Schema;
 import org.xml.sax.SAXException;
@@ -12,7 +11,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ParserTest {
+public class PublicationToAuthor {
     public static void main(String[] args) {
         String input = args[0];
         String output = args[1];
@@ -30,9 +29,9 @@ public class ParserTest {
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             Map<String, String> pMap = new HashMap<String, String>();
             pMap.put("key", "key");
-            pMap.put("cite", "cites");
+            pMap.put("author", "authors");
             PublicationHandler publicationHandler = new PublicationHandler(
-                    new Schema("publication", pMap, "org.pasalab.experiment.publications.Publication"), outFile);
+                    new Schema(pMap, "org.pasalab.experiment.publications.Publication"), outFile);
             parser.parse(in, publicationHandler);
 
         } catch (ParserConfigurationException e) {

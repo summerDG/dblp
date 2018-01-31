@@ -1,5 +1,6 @@
 package org.pasalab.experiment.fields;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.xml.sax.Attributes;
 import org.pasalab.experiment.utils.CDATA;
 import org.pasalab.experiment.utils.PCDATA;
@@ -85,7 +86,7 @@ public class Author extends Field {
     }
 
     public String getUrlpt() {
-        return toUrlpt(key.toString());
+        return toUrlpt(toHtml(key.toString()));
     }
 
     private String toUrlpt(String name) {
@@ -93,8 +94,8 @@ public class Author extends Field {
         StringBuilder builder = new StringBuilder();
         String lastName;
         if (i < 0) {
-            lastName = name;
-            builder.append(Character.toLowerCase(name.charAt(0)));
+            lastName = format(name);
+            builder.append(Character.toLowerCase(lastName.charAt(0)));
             builder.append('/');
         } else {
             String firstName = format(name.substring(i + 1));
@@ -102,13 +103,13 @@ public class Author extends Field {
             builder.append('/');
             builder.append(firstName);
             builder.append(":");
-            lastName = name.substring(0, i);
+            lastName = format(name.substring(0, i));
         }
-        builder.append(format(lastName));
+        builder.append(lastName);
         return builder.toString();
     }
     private String format(String s) {
-        return s.replaceAll("(\\.|;|-|&)", "=").replace(' ', '_');
+        return s.replaceAll("(\\.|;|-|&|')", "=").replace(' ', '_');
     }
     private int getFirstNameIndex(String name) {
         if (name.length() < 1) return -1;
@@ -120,6 +121,9 @@ public class Author extends Field {
             }
         }
         return -1;
+    }
+    private String toHtml(String s) {
+        return StringEscapeUtils.escapeHtml4(s);
     }
 
     private boolean isDisgit(char c) {
